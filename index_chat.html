@@ -10,25 +10,28 @@
 
   <style>
     :root {
-      --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      --glass-bg: rgba(255, 255, 255, 0.1);
-      --glass-border: rgba(255, 255, 255, 0.2);
+      --bg-gradient: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+      --glass-bg: rgba(255, 255, 255, 0.07);
+      --glass-border: rgba(255, 255, 255, 0.15);
       --text-main: #ffffff;
-      --text-muted: #e0e0e0;
+      --text-muted: #b3b9c5;
       --accent: #00f2fe;
-      --accent-grad: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
-      --card-bg: rgba(255, 255, 255, 0.15);
+      --accent-grad: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --inner-shadow: inset 0 0 15px rgba(255, 255, 255, 0.05);
     }
 
     /* สไตล์ธีมสว่าง (กดเปลี่ยนได้ที่ปุ่มรูปดวงอาทิตย์) */
     body.light-theme {
       --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-      --glass-bg: rgba(255, 255, 255, 0.8);
-      --glass-border: rgba(255, 255, 255, 0.5);
+      --glass-bg: rgba(255, 255, 255, 0.7);
+      --glass-border: rgba(255, 255, 255, 0.6);
       --text-main: #2d3748;
       --text-muted: #718096;
-      --accent: #4facfe;
-      --card-bg: rgba(255, 255, 255, 0.9);
+      --accent: #0072ff;
+      --accent-grad: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      --card-bg: rgba(0, 0, 0, 0.05);
+      --inner-shadow: inset 0 0 10px rgba(0, 0, 0, 0.02);
     }
 
     * {
@@ -49,18 +52,19 @@
       transition: all 0.5s ease;
     }
 
-    /* กล่องแอปพลิเคชันหลัก */
+    /* กล่องแอปพลิเคชันหลัก (ปรับให้หรูหราขึ้น) */
     .app-container {
       width: 100%;
-      max-width: 420px;
+      max-width: 410px;
       height: 85vh;
-      min-height: 600px;
+      min-height: 650px;
       background: var(--glass-bg);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
       border: 1px solid var(--glass-border);
-      border-radius: 30px;
-      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+      border-radius: 35px;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3), 
+                  inset 0 1px 0 rgba(255,255,255,0.2);
       display: flex;
       flex-direction: column;
       overflow: hidden;
@@ -69,37 +73,77 @@
 
     /* Header */
     .app-header {
-      padding: 20px;
+      padding: 20px 25px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid var(--glass-border);
+      background: rgba(0, 0, 0, 0.1);
     }
 
     .brand-title {
-      font-size: 1.2rem;
+      font-size: 1.15rem;
       font-weight: 600;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
 
     .brand-title i {
       color: var(--accent);
+      text-shadow: 0 0 10px var(--accent);
     }
 
     .header-actions {
       display: flex;
-      gap: 15px;
+      gap: 18px;
       font-size: 1.2rem;
       cursor: pointer;
     }
 
-    /* ส่วนเนื้อหา (แสดงผลสลับระหว่างแชท กับ เรดาร์สแกนคน) */
+    .header-actions i {
+      transition: transform 0.2s, color 0.2s;
+    }
+    
+    .header-actions i:hover {
+      transform: scale(1.1);
+      color: var(--accent);
+    }
+
+    /* --- เพิ่มใหม่: ส่วนจำลอง Profile เล็กน้อย เพื่อลดความโล่งด้านบน --- */
+    .user-mini-profile {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 15px 25px;
+      background: rgba(0, 0, 0, 0.05);
+      border-bottom: 1px solid var(--glass-border);
+    }
+    
+    .mini-avatar {
+      width: 35px;
+      height: 35px;
+      border-radius: 10px;
+      background: var(--accent-grad);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 0.9rem;
+    }
+    
+    .user-info-text {
+      font-size: 0.85rem;
+    }
+    
+    .user-info-text b { display: block; }
+    .user-info-text span { color: var(--text-muted); font-size: 0.75rem; }
+
+    /* ส่วนเนื้อหา */
     .app-content {
       flex: 1;
       overflow-y: auto;
-      padding: 20px;
+      padding: 20px 25px;
       display: flex;
       flex-direction: column;
     }
@@ -112,18 +156,19 @@
       align-items: center;
       justify-content: center;
       position: relative;
+      padding: 20px 0;
     }
 
     .radar-circle {
-      width: 200px;
-      height: 200px;
-      border: 2px solid var(--accent);
+      width: 180px;
+      height: 180px;
+      border: 2px solid rgba(0, 242, 254, 0.3);
       border-radius: 50%;
       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 15px var(--accent);
+      box-shadow: 0 0 20px rgba(0, 242, 254, 0.1), var(--inner-shadow);
     }
 
     .radar-circle::before {
@@ -131,22 +176,30 @@
       position: absolute;
       width: 100%;
       height: 100%;
-      border: 1px solid var(--accent);
+      border: 2px solid var(--accent);
       border-radius: 50%;
-      animation: pulse 2s linear infinite;
+      animation: pulse 2.5s cubic-bezier(0.21, 0.98, 0.6, 0.99) infinite;
+    }
+    
+    .radar-circle::after {
+      content: '';
+      position: absolute;
+      width: 60%;
+      height: 60%;
+      border: 1px dashed rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
     }
 
     .radar-scanner {
       position: absolute;
       width: 50%;
       height: 50%;
-      background: linear-gradient(45deg, transparent 50%, var(--accent) 100%);
+      background: linear-gradient(45deg, transparent 50%, rgba(0, 242, 254, 0.4) 100%);
       top: 0;
       left: 0;
       transform-origin: bottom right;
-      animation: scan 4s linear infinite;
+      animation: scan 3s linear infinite;
       border-radius: 100% 0 0 0;
-      opacity: 0.4;
     }
 
     @keyframes scan {
@@ -155,13 +208,30 @@
     }
 
     @keyframes pulse {
-      0% { transform: scale(1); opacity: 1; }
-      100% { transform: scale(1.6); opacity: 0; }
+      0% { transform: scale(0.9); opacity: 1; }
+      100% { transform: scale(1.8); opacity: 0; }
     }
+
+    /* --- เพิ่มใหม่: ตัวเลขสถิติเพื่อความแน่นของหน้า --- */
+    .radar-stats {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      margin-top: 15px;
+      background: var(--card-bg);
+      padding: 10px 15px;
+      border-radius: 15px;
+      border: 1px solid var(--glass-border);
+      font-size: 0.8rem;
+    }
+    
+    .stat-item { text-align: center; flex: 1; }
+    .stat-item:not(:last-child) { border-right: 1px solid var(--glass-border); }
+    .stat-item b { color: var(--accent); display: block; font-size: 1rem; }
 
     /* === ลูกเล่นที่ 2: Card รายชื่อคนที่อยู่ใกล้ๆ === */
     .people-cards {
-      margin-top: 20px;
+      margin-top: auto;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 15px;
@@ -171,39 +241,49 @@
     .person-card {
       background: var(--card-bg);
       border: 1px solid var(--glass-border);
-      border-radius: 15px;
+      border-radius: 20px;
       padding: 15px;
       text-align: center;
-      transition: transform 0.3s ease;
+      transition: all 0.3s ease;
       cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: var(--inner-shadow);
     }
 
     .person-card:hover {
       transform: translateY(-5px);
-      background: rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--accent);
     }
 
     .avatar {
-      width: 50px;
-      height: 50px;
+      width: 45px;
+      height: 45px;
       border-radius: 50%;
-      margin: 0 auto 10px;
-      background: #e2e8f0;
+      margin-bottom: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: bold;
       color: #fff;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    .person-name {
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-bottom: 4px;
     }
 
     .dist-tag {
       display: inline-block;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       padding: 2px 8px;
-      border-radius: 10px;
+      border-radius: 20px;
       background: var(--accent-grad);
       color: #fff;
-      margin-top: 5px;
     }
 
     /* === ส่วนแชทเดิมแต่ทำให้สวยขึ้น === */
@@ -219,6 +299,7 @@
       display: flex;
       flex-direction: column;
       gap: 15px;
+      padding-bottom: 10px;
     }
 
     .msg {
@@ -232,39 +313,48 @@
 
     .msg-bubble {
       padding: 12px 16px;
-      border-radius: 18px;
-      font-size: 0.9rem;
-      line-height: 1.4;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     }
 
     .msg.bot .msg-bubble {
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 0 18px 18px 18px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 4px 20px 20px 20px;
+      border: 1px solid rgba(255,255,255,0.1);
     }
 
     .msg.user .msg-bubble {
       background: var(--accent-grad);
       color: #fff;
-      border-radius: 18px 0 18px 18px;
+      border-radius: 20px 4px 20px 20px;
     }
 
     /* ช่องพิมพ์แชท */
     .input-area {
       display: flex;
       gap: 10px;
-      padding: 15px 0 0;
+      padding: 15px 0 5px 0;
       border-top: 1px solid var(--glass-border);
     }
 
     .input-area input {
       flex: 1;
       border: none;
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(0, 0, 0, 0.15);
       border: 1px solid var(--glass-border);
-      border-radius: 12px;
-      padding: 12px 15px;
+      border-radius: 15px;
+      padding: 12px 18px;
       color: var(--text-main);
       outline: none;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+    
+    .input-area input:focus {
+      background: rgba(0, 0, 0, 0.25);
+      border-color: var(--accent);
     }
 
     .input-area input::placeholder { color: var(--text-muted); }
@@ -273,17 +363,23 @@
       width: 45px;
       height: 45px;
       border: none;
-      border-radius: 12px;
+      border-radius: 15px;
       background: var(--accent-grad);
       color: white;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: transform 0.2s;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 10px rgba(0, 198, 255, 0.3);
     }
 
-    .btn-send:active { transform: scale(0.9); }
+    .btn-send:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 15px rgba(0, 198, 255, 0.4);
+    }
+
+    .btn-send:active { transform: scale(0.95); }
 
     /* ซ่อน scrollbar */
     ::-webkit-scrollbar { width: 0px; }
@@ -294,7 +390,7 @@
   <div class="app-container">
     <header class="app-header">
       <div class="brand-title">
-        <i class="fa-solid fa-earth-asia fa-spin" style="--fa-animation-duration: 5s;"></i>
+        <i class="fa-solid fa-earth-asia fa-spin" style="--fa-animation-duration: 6s;"></i>
         <span>NearMe GPT-4</span>
       </div>
       <div class="header-actions">
@@ -303,25 +399,48 @@
       </div>
     </header>
 
+    <div class="user-mini-profile">
+      <div class="mini-avatar">U</div>
+      <div class="user-info-text">
+        <b>ผู้ใช้งานทั่วไป</b>
+        <span>พิกัดปัจจุบัน: เปิดใช้งานแล้ว</span>
+      </div>
+    </div>
+
     <div class="app-content" id="radarView">
       <div class="radar-container">
         <div class="radar-circle">
           <div class="radar-scanner"></div>
-          <i class="fa-solid fa-street-view fa-2x" style="color: #fff;"></i>
+          <i class="fa-solid fa-street-view fa-2x" style="color: #fff; filter: drop-shadow(0 0 5px var(--accent));"></i>
         </div>
-        <p style="margin-top: 25px; font-weight: 500;">กำลังค้นหาคนที่อยู่ใกล้คุณ...</p>
-        <p style="font-size: 0.85rem; color: var(--text-muted);">เปิดแชร์ตำแหน่งเพื่อความแม่นยำ</p>
+        <p style="margin-top: 20px; font-weight: 500; font-size: 0.95rem;">กำลังค้นหาคนที่อยู่ใกล้คุณ...</p>
+        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">เปิดแชร์ตำแหน่งเพื่อความแม่นยำ</p>
+        
+        <div class="radar-stats">
+          <div class="stat-item">
+            <b>2</b>
+            <span>คนรอบตัว</span>
+          </div>
+          <div class="stat-item">
+            <b>5 กม.</b>
+            <span>รัศมีสแกน</span>
+          </div>
+          <div class="stat-item">
+            <b>100%</b>
+            <span>ความแรงสัญญาณ</span>
+          </div>
+        </div>
       </div>
 
       <div class="people-cards">
         <div class="person-card" onclick="startChat('น้องมินนี่')">
-          <div class="avatar" style="background: #ff6b6b;">M</div>
-          <div>น้องมินนี่</div>
+          <div class="avatar" style="background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);">M</div>
+          <div class="person-name">น้องมินนี่</div>
           <span class="dist-tag">0.5 กม.</span>
         </div>
         <div class="person-card" onclick="startChat('บอส คิม')">
-          <div class="avatar" style="background: #4ecdc4;">K</div>
-          <div>บอส คิม</div>
+          <div class="avatar" style="background: linear-gradient(135deg, #4ecdc4 0%, #55e7dd 100%);">K</div>
+          <div class="person-name">บอส คิม</div>
           <span class="dist-tag">1.2 กม.</span>
         </div>
       </div>
